@@ -12,7 +12,7 @@ Here: [HashSourceCodes from OpenSubtitles](http://trac.opensubtitles.org/project
 Note please, the original hashing algorithm is already opensource.
 
 ### How to use:
-Compile and use it as a command line tool. It'll launch OpenSubtitles website seeking the movie's hash.
+Compile and use it as a command line tool. It'll **launch OpenSubtitles website** seeking the movie's hash.
 
 That's all!
 
