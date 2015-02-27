@@ -12,10 +12,10 @@ namespace MovieHash.Test
         [TestMethod]
         public void TestLoadSubtitleFromHash()
         {
-            var hash = "05f5f4ed29b1aa4e";
+            var hash = "88b7672be293a0ca";
 
-            MovieHash.Program.GetSubtitle(URLBASE + hash);
-            Assert.Inconclusive();
+            Program.GetSubtitle(URLBASE + hash);
+            Assert.IsTrue(true);
         }
     }
 }

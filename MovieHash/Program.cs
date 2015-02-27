@@ -23,24 +23,37 @@ namespace MovieHash
                 return;
             }
 
-            string path;
+            string aviFile;
             if (File.Exists(args[0]))
             {
-                path = args[0];
+                aviFile = args[0];
             }
             else
             {
-                path = Path.Combine(Directory.GetCurrentDirectory(), args[0]);
+                aviFile = Path.Combine(Directory.GetCurrentDirectory(), args[0]);
+            }
+            aviFile = Path.GetFullPath(aviFile);
+
+            var hash = Hashing.ToHexadecimal(Hashing.ComputeMovieHash(aviFile));
+            var url = URLBASE + hash;
+
+            Console.WriteLine("OpenSubtitles ==>  {0}", url);
+
+            var srtText = GetSubtitle(url);
+            if (string.IsNullOrWhiteSpace(srtText))
+            {
+                Console.WriteLine("Não encontrou a legenda ... abrindo site");
+                Process.Start(url);
+                return;
             }
 
-            var hash = Hashing.ToHexadecimal(Hashing.ComputeMovieHash(path));
-            Console.WriteLine("OpenSubtitles Hash ==>  {0}", hash);
-
-            var url = URLBASE + hash;
-            Process.Start(url);
+            var folder = Path.GetDirectoryName(aviFile);
+            var srtFile = Path.GetFileNameWithoutExtension(aviFile) + ".srt";
+            var destination = Path.Combine(folder, srtFile);
+            File.WriteAllText(destination, srtText);
         }
 
-        public static void GetSubtitle(string url)
+        public static string GetSubtitle(string url)
         {
             const string BASE_DOWNLOAD = "http://dl.opensubtitles.org/pb/download/sub/";
 
@@ -75,12 +88,14 @@ namespace MovieHash
                             if (item.Name.EndsWith(".srt"))
                             {
                                 // Found the subtitle                                
-                                var srt = new StreamReader(item.Open()).ReadToEnd();
+                                return new StreamReader(item.Open(), Encoding.GetEncoding(1252)).ReadToEnd();
                             }
                         }
                     }
                 }
-            }            
+            }
+
+            return null;       
         }
     }
 }
