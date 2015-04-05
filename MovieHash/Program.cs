@@ -50,7 +50,7 @@ namespace MovieHash
             var folder = Path.GetDirectoryName(aviFile);
             var srtFile = Path.GetFileNameWithoutExtension(aviFile) + ".srt";
             var destination = Path.Combine(folder, srtFile);
-            File.WriteAllText(destination, srtText);
+            File.WriteAllText(destination, srtText, Encoding.GetEncoding(1252));
         }
 
         public static string GetSubtitle(string url)
